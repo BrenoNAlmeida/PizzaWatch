@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Divida;
 use App\Models\Prova;
 use App\Providers\RouteServiceProvider;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class ProvaController extends Controller
 {
@@ -13,7 +16,8 @@ class ProvaController extends Controller
      */
     public function index()
     {
-        //
+        $provas = Prova::all();
+        return view('provas', compact('provas'));
     }
 
     /**
@@ -21,7 +25,9 @@ class ProvaController extends Controller
      */
     public function create()
     {
-        //
+            
+            $funcionarios = User::all();
+            return view('cadastrar_prova', compact('funcionarios'));
     }
 
     /**
@@ -40,11 +46,43 @@ class ProvaController extends Controller
             $nomeImagem = time() . '.' . $imagem->getClientOriginalExtension();
             $caminhoImagem = $imagem->storeAs('public', $nomeImagem);
 
-            $prova = Prova::create(['foto'=>$request->foto, 'devedor_id'=>$request->devedor]);
+            $prova = Prova::create(['foto'=>$nomeImagem, 'devedor_id'=>$request->devedor]);
             $prova->save();
         }
+        Alert::success("Prova Cadastrada");
         return redirect(RouteServiceProvider::HOME);
     
+    }
+
+    public function confirmar_prova(Request $request)
+    {
+        $prova = Prova::find($request->id);
+        $prova->Evalidado = true;
+        $prova->save();
+
+        $dividasDoDevedor = Divida::where('devedor_id',$prova->devedor_id)->get();
+
+        //cria divida
+        $divida = Divida::create(['devedor_id'=>$prova->devedor_id,
+                        'prova_id'=>$prova->id, 
+                        'pizza'=>true,
+        ]);
+        
+        //verificar se é a terceira do mes pela data de criação das duas ultimas dele
+        if($dividasDoDevedor->count() >= 2){
+            $ultimaDivida = $dividasDoDevedor->last();
+            $penultimaDivida = $dividasDoDevedor->reverse()->skip(1)->first();
+            if($ultimaDivida->created_at->format('m') == $penultimaDivida->created_at->format('m')){
+                $divida->refrigerante = true;
+            }
+        }
+        $divida->save();
+
+
+        //alerta para prova validada com sucesso
+        Alert::success("Prova Verificada");
+        return redirect(RouteServiceProvider::HOME);
+
     }
 
     /**
@@ -52,7 +90,7 @@ class ProvaController extends Controller
      */
     public function show(Prova $prova)
     {
-        //
+        return view('analisar_prova', compact('prova'));
     }
 
     /**
@@ -74,8 +112,12 @@ class ProvaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Prova $prova)
+    public function destroy(Request $request)
     {
-        //
+        $prova = Prova::find($request->id);
+        $prova->delete();
+        Alert::success("Prova Recusada");
+        return redirect(RouteServiceProvider::HOME);
     }
+    
 }

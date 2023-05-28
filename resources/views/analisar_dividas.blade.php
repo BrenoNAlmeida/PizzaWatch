@@ -1,40 +1,36 @@
 @php
-use \App\Models\User;
-use \App\Models\Prova;
 use \App\Models\Divida;
-$user = Auth::user();
-$minhas_dividas = Divida::where('devedor_id', $user->id)->get();
-@endphp
+use \App\Models\User;
+$dividasPendentes = Divida::where('paga', false)->get()
 
+@endphp
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <p class="text-lg">Nome: {{ $user->nome }}</p>                           
-            <p class="text-lg">Matricula: {{ $user->matricula }}</p>
+            {{ __('comfirmar Pagamento') }}
         </h2>
     </x-slot>
 
-    <!-- Dividas -->
-    @if($minhas_dividas->count() > 0)
+
+    @if($dividasPendentes->count() > 0)
     <div class='py-6'>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-30 text-gray-900 dark:text-gray-100">
-                    <div class="h-full flex flex-col">
+                    <div class='h-full flex flex-col '>
                         <table class="table-auto">
                             <thead>
                                 <tr>
                                     <th scope="col">Devedor</th>
                                     <th scope="col">Pizza</th>
                                     <th scope="col">Refrigerante</th>
-                                    <th scope="col">Data</th>
-                                    <th scope="col">Pago</th>
-                                </tr>
-                            </thead>
-                            @foreach ($minhas_dividas as $divida)
+                                    <th scope="col">Confirmar Pagamento</th>
+                                </tr>      
+                            </thead> 
                                 <tbody>
-                                    <tr>
-                                        <td>
+                                    @foreach ($dividasPendentes as $divida)
+                                    <tr class="items-center">
+                                        <td >
                                             {{ User::find($divida->devedor_id)->nome }}
                                         </td>
                                         <td>
@@ -52,19 +48,15 @@ $minhas_dividas = Divida::where('devedor_id', $user->id)->get();
                                             @endif
                                         </td>
                                         <td>
-                                            {{ $divida->created_at->format('d/m/Y') }}
-                                        </td>
-
-                                        <td>
-                                            @if($divida->paga)
-                                                Sim
-                                            @else
-                                                Não
-                                            @endif
+                                            <form method="POST" action="/confirmar-pagamento">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{ $divida->id }}">
+                                                <button type="submit" class="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">Confirmar</button>
+                                            </form> 
                                         </td>
                                     </tr>
+                                    @endforeach
                                 </tbody>
-                            @endforeach
                         </table>
                     </div>
                 </div>
@@ -73,7 +65,18 @@ $minhas_dividas = Divida::where('devedor_id', $user->id)->get();
     </div>
 
     @else
-        <p class="text-lg">Você não possui dividas</p>
-    @endif
 
+        <div class="py-6">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-30 text-gray-900 dark:text-gray-100">
+                        <div class="text-center">
+                            <h1 class="text-3xl text-gray-900 dark:text-gray-100">Não há Pizzas Pendentes</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@include('sweetalert::alert')   
 </x-app-layout>

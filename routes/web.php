@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProvaController;
+use App\Http\Controllers\DividaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [AuthenticatedSessionController::class, 'create'])
+->name('login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -29,6 +31,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('/cadastrar-prova',[ProvaController::class,'store'])->name('prova.store');
-});
+    Route::post('/confirmar-prova',[ProvaController::class,'confirmar_prova'])->name('prova.confirmar_prova');
+    Route::post('/recusar-prova',[ProvaController::class,'destroy'])->name('prova.recusar_prova');
+    Route::get('/analisar-provas',[ProvaController::class,'show'])->name('prova.analisar-provas');
+    
+    Route::post('/confirmar-pagamento',[DividaController::class,'comfirmar_pagamento'])->name('divida.comfirmar_pagamento');
+    Route::get('/analisar-dividas',[DividaController::class,'show'])->name('divida.analisar-dividas');
+}); 
 
 require __DIR__.'/auth.php';

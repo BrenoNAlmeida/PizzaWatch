@@ -16,9 +16,9 @@ class Prova extends Model
     ];
 
     //relacionamento de dividida com usuario
-    public function devedor()
+    public function Prova()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class, 'id');
     }
     
 }

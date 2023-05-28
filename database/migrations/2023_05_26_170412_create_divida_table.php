@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('dividas', function (Blueprint $table) {
             $table->id();
             $table->boolean('pizza');
-            $table->boolean('refrigerante');
-            $table->boolean('paga');
+            $table->boolean('refrigerante')->default(false);
+            $table->boolean('paga')->default(false);
             $table->foreignId('devedor_id')->constrained('users');
             $table->foreignId('prova_id')->constrained('provas');
             $table->timestamps();

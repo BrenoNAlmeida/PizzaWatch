@@ -47,9 +47,13 @@ class User extends Authenticatable
     ];
 
     //relacionamento de dividida com usuario
-    public function dividas()
+    public function Divida()
     {
         return $this->hasMany(Divida::class);
+    }
+    public function Prova()
+    {
+        return $this->hasMany(Prova::class);
     }
 
 }
