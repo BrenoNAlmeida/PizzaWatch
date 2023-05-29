@@ -31,6 +31,7 @@ $provas = Prova::all();
                                 <option selected>------</option>
                                 @foreach ($funcionarios as $fun)
                                     <option value="{{$fun->id}}">{{$fun->nome}}</option>
+                                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                 @endforeach
                                 </select>
 

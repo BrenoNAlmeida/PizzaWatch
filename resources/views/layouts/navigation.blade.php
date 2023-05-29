@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <img alt="shortcut icon" width='50' src={{asset('img/pizza.png')}}>
                     </a>
                 </div>
 
@@ -16,15 +16,15 @@
                         {{ __('Cadastrar Prova') }}
                     </x-nav-link>
                 </div>
-
+                @if(Auth::User()->role == 1)
                 <!-- confirmar prova-->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('prova.analisar-provas')" :active="request()->routeIs('confirmar-provas')">
                         {{ __('Analisar Provas') }}
                     </x-nav-link>
                 </div>
-
-                <!-- confirmar pagamento-->
+                @endif
+                <!-- Pizzas pendentes-->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('divida.analisar-dividas')" :active="request()->routeIs('confirmar-pagamentos')">
                         {{ __('Pizzas Pendentes') }}
@@ -40,9 +40,7 @@
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ml-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
+                                <img alt="shortcut icon" width='40' src={{asset('img/perfil.png')}}>
                             </div>
                         </button>
                     </x-slot>

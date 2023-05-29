@@ -22,9 +22,12 @@ $dividasPendentes = Divida::where('paga', false)->get()
                             <thead>
                                 <tr>
                                     <th scope="col">Devedor</th>
+                                    <th scope="col">Prova</th>
                                     <th scope="col">Pizza</th>
                                     <th scope="col">Refrigerante</th>
+                                    @if(Auth::User()->role == 1)
                                     <th scope="col">Confirmar Pagamento</th>
+                                    @endif
                                 </tr>      
                             </thead> 
                                 <tbody>
@@ -33,7 +36,13 @@ $dividasPendentes = Divida::where('paga', false)->get()
                                         <td >
                                             {{ User::find($divida->devedor_id)->nome }}
                                         </td>
+
                                         <td>
+                                            <div class="w-16 h-16 overflow-hidden rounded">
+                                                <img src="{{ asset('storage/' . $divida->prova->foto) }}" class="object-cover w-full h-full" alt="imagem">
+                                            </div>
+                                        <td>
+
                                             @if($divida->pizza)
                                                 Sim
                                             @else
@@ -47,6 +56,7 @@ $dividasPendentes = Divida::where('paga', false)->get()
                                                 Não
                                             @endif
                                         </td>
+                                        @if(Auth::User()->role == 1)
                                         <td>
                                             <form method="POST" action="/confirmar-pagamento">
                                                 @csrf
@@ -54,6 +64,7 @@ $dividasPendentes = Divida::where('paga', false)->get()
                                                 <button type="submit" class="mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">Confirmar</button>
                                             </form> 
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>
