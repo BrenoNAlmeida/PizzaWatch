@@ -7,7 +7,7 @@ $dividasPendentes = Divida::where('paga', false)->get()
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('comfirmar Pagamento') }}
+            {{ __('Confirmar Pagamento') }}
         </h2>
     </x-slot>
 
@@ -32,14 +32,16 @@ $dividasPendentes = Divida::where('paga', false)->get()
                             </thead> 
                                 <tbody>
                                     @foreach ($dividasPendentes as $divida)
-                                    <tr class="items-center">
-                                        <td >
-                                            {{ User::find($divida->devedor_id)->nome }}
+                                    <tr class="items-center text-center">
+                                        <td>
+                                           {{ User::find($divida->devedor_id)->nome }}
                                         </td>
 
-                                        <td>
-                                            <div class="w-16 h-16 overflow-hidden rounded">
-                                                <img src="{{ asset('storage/' . $divida->prova->foto) }}" class="object-cover w-full h-full" alt="imagem">
+                                        <td class="flex align-middle justify-center">
+                                            <div class="w-16 h-16 rounded">
+                                                <a class="m-auto w-fit" href="{{route('prova.analisar-prova', ['prova'=>$divida->prova_id])}}">
+                                                    <img src="{{ asset('storage/' . $divida->prova->foto) }}" class="object-cover w-full h-full" alt="imagem" >
+                                                </a>
                                             </div>
                                         <td>
 

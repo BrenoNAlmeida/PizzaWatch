@@ -21,7 +21,7 @@ $minhas_dividas = Divida::where('devedor_id', $user->id)->get();
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-30 text-gray-900 dark:text-gray-100">
                     <div class="h-full flex flex-col">
-                        <table class="table-auto">
+                        <table class="table-auto text-center">
                             <thead>
                                 <tr>
                                     <th scope="col">Devedor</th>

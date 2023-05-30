@@ -16,14 +16,6 @@
                         {{ __('Cadastrar Prova') }}
                     </x-nav-link>
                 </div>
-                @if(Auth::User()->role == 1)
-                <!-- confirmar prova-->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('prova.analisar-provas')" :active="request()->routeIs('confirmar-provas')">
-                        {{ __('Analisar Provas') }}
-                    </x-nav-link>
-                </div>
-                @endif
                 <!-- Pizzas pendentes-->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('divida.analisar-dividas')" :active="request()->routeIs('confirmar-pagamentos')">
@@ -80,11 +72,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link :href="route('prova.analisar-provas')" :active="request()->routeIs('confirmar-provas')">
-                {{ __('Analisar Provas') }}
+                {{ __('Cadastrar Prova') }}
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('divida.analisar-dividas')" :active="request()->routeIs('confirmar-pagamentos')">

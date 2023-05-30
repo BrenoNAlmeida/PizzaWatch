@@ -55,5 +55,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Prova::class);
     }
+    public function testemunha()
+    {
+        return $this->hasMany(Prova::class);
+    }
 
 }

@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/cadastrar-prova',[ProvaController::class,'store'])->name('prova.store');
     Route::post('/confirmar-prova',[ProvaController::class,'confirmar_prova'])->name('prova.confirmar_prova');
     Route::post('/recusar-prova',[ProvaController::class,'destroy'])->name('prova.recusar_prova');
-    Route::get('/analisar-provas',[ProvaController::class,'show'])->name('prova.analisar-provas');
+    Route::get('/analisar-prova/{prova}',[ProvaController::class,'show'])->name('prova.analisar-prova');
     
     Route::post('/confirmar-pagamento',[DividaController::class,'comfirmar_pagamento'])->name('divida.comfirmar_pagamento');
     Route::get('/analisar-dividas',[DividaController::class,'show'])->name('divida.analisar-dividas');

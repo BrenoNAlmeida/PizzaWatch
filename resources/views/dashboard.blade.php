@@ -31,12 +31,11 @@ $provas = Prova::all();
                                 <option selected>------</option>
                                 @foreach ($funcionarios as $fun)
                                     <option value="{{$fun->id}}">{{$fun->nome}}</option>
-                                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                 @endforeach
                                 </select>
 
                             </div>
-
+                                <input type="hidden" id='testeminha_id' name="testemunha_id" value="{{ Auth::user()->id }}">
                             <div class="col-sm-10">
                                 <button type="submit"
                                 class=" mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded ">Cadastrar</button>
