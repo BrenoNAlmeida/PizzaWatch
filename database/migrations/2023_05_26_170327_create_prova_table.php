@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('provas', function (Blueprint $table) {
             $table->id();
             $table->string('foto');
-            $table->boolean('Evalidado')->default(false);
             $table->foreignId('devedor_id')->constrained('users');
+            $table->foreignId('testemunha_id')->constrained('users');
             $table->timestamps();
         });
     }

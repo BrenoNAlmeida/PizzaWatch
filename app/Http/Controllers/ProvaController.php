@@ -30,15 +30,23 @@ class ProvaController extends Controller
             return view('cadastrar_prova', compact('funcionarios'));
     }
 
+    public function confirmar_prova(Request $request)
+    {
+        $prova = Prova::find($request->id);
+        $prova->save();
+
+       
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //dd($request->all());
         $request->validate([
             'foto' => 'required|image|max:2048',
-            'devedor'=>'required'
+            'devedor'=>'required',
+            'testemunha_id'=>'required'
         ]);
 
         if ($request->hasFile('foto')) {
@@ -46,26 +54,17 @@ class ProvaController extends Controller
             $nomeImagem = time() . '.' . $imagem->getClientOriginalExtension();
             $caminhoImagem = $imagem->storeAs('public', $nomeImagem);
 
-            $prova = Prova::create(['foto'=>$nomeImagem, 'devedor_id'=>$request->devedor]);
+            $prova = Prova::create(['foto'=>$nomeImagem, 'devedor_id'=>$request->devedor, 'testemunha_id'=>$request->testemunha_id]);
             $prova->save();
         }
-        Alert::success("Prova Cadastrada");
-        return redirect(RouteServiceProvider::HOME);
-    
-    }
-
-    public function confirmar_prova(Request $request)
-    {
-        $prova = Prova::find($request->id);
-        $prova->Evalidado = true;
-        $prova->save();
-
         $dividasDoDevedor = Divida::where('devedor_id',$prova->devedor_id)->get();
+
 
         //cria divida
         $divida = Divida::create(['devedor_id'=>$prova->devedor_id,
                         'prova_id'=>$prova->id, 
                         'pizza'=>true,
+                        
         ]);
         
         //verificar se é a terceira do mes pela data de criação das duas ultimas dele
@@ -80,9 +79,10 @@ class ProvaController extends Controller
 
 
         //alerta para prova validada com sucesso
-        Alert::success("Prova Verificada");
+        Alert::success("Prova Cadastrada");
         return redirect(RouteServiceProvider::HOME);
 
+    
     }
 
     /**
